@@ -28,7 +28,9 @@
             * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+<!--        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">-->
+        <meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; img-src * 'self' data: https:; connect-src * 'unsafe-inline'; frame-src *;">
+        <meta http-equiv="Content-Security-Policy" content="default-src * gap://ready file:; style-src 'self' 'unsafe-inline' *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; img-src 'self' data: *">
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
@@ -42,7 +44,9 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="js/jquery.ui.touch-punch.min.js"></script>
         <script src="http://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+        <script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
     </head>
     <body>
     <div id="init" class="container">
@@ -70,7 +74,8 @@
                     <i id="delete" class="material-icons menu">tv_off</i>
                 </label>
                 <label>
-                    <i id="drag" class="material-icons menu">open_with</i>
+<!--                    <i id="drag" class="material-icons menu">open_with</i>-->
+                    <i id="share" class="material-icons menu">open_in_new</i>
                 </label>
                 <label>
                     <i id="resize" class="material-icons menu">crop</i>
@@ -91,25 +96,25 @@
                 <div id="myDropdown" class="dropdown-content">
                     <button class="dropbtn">Hosteleria</button>
                     <div id="hostel" style="display:none;" >
-                        <ul>
+                        <ul style="list-style: none;">
                             <li class="dropbtn">
                                 <video autoplay loop playsinline>
-                                  <source src="static/bienvenida1.mp4" type="video/mp4">
+                                  <source src="img/bienvenida1.mp4" type="video/mp4">
                                 </video>
                             </li>
                             <li class="dropbtn">
                                 <video autoplay loop playsinline>
-                                  <source src="static/oferta_findesemana.mp4" type="video/mp4">
+                                  <source src="img/oferta_findesemana.mp4" type="video/mp4">
                                 </video>
                             </li>
                             <li class="dropbtn">
-                                <img src="static/descarga.jpeg" alt="bckgd">
+                                <img src="img/descarga.jpeg" alt="bckgd">
                             </li>
                         </ul>
                     </div>
                     <button  class="dropbtn">Retail</button>
                         <div id="retail" style="display:none;">
-                                <ul>
+                                <ul style="list-style: none;">
                                     <li class="dropbtn">1</li>
                                     <li class="dropbtn">2</li>
                                     <li class="dropbtn">3</li>
@@ -117,7 +122,7 @@
                         </div>
                     <button class="dropbtn">Otros</button>
                         <div id="oth" style="display:none;">
-                                <ul>
+                                <ul style="list-style: none;">
                                     <li class="dropbtn">1</li>
                                     <li class="dropbtn">2</li>
                                     <li class="dropbtn">3</li>
@@ -152,7 +157,7 @@
                 </div>
             </div>
 <!--            <i class="material-icons screen">tv</i>-->
-            <i id="share" class="material-icons">open_in_new</i>
+            <i id="menu-icon" class="material-icons">edit</i>
 
         </div>
     </div>
@@ -161,6 +166,7 @@
         <script type="text/javascript" src="js/actions.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript" src="js/PerspectiveTransform.min.js"></script>
+
 
     </body>
 </html>

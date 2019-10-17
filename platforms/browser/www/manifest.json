@@ -1,11 +1,11 @@
 {
   "background_color": "#FFF",
   "display": "standalone",
-  "name": "Hello World",
-  "short_name": "Hello World",
+  "name": "Nedit",
+  "short_name": "Nedit",
   "version": "com.example.hello",
-  "description": "A sample Apache Cordova application that responds to the deviceready event.",
-  "author": "Apache Cordova Team",
+  "description": "Image Editor.",
+  "author": "netipbox Team",
   "icons": [],
   "start_url": "index.html"
 }

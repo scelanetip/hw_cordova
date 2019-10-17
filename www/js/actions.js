@@ -135,6 +135,31 @@ $('.screen').on('click touch', function (e) {
         border: '0.5vw solid transparent'
     }).appendTo('#workspace').draggable();
 
+//    var myElement = document.getElementById(delementID);
+//    var image =  $("#div"+ canvasID);
+//
+//    var mc = new Hammer.Manager(myElement);
+//
+//    // create a pinch and rotate recognizer
+//    // these require 2 pointers
+//    var pinch = new Hammer.Pinch();
+//    var rotate = new Hammer.Rotate();
+//
+//    // we want to detect both the same time
+//    pinch.recognizeWith(rotate);
+//
+//    // add to the Manager
+//    mc.add([pinch, rotate]);
+//    width = image.width();
+//    height = image.height();
+//
+//    mc.on("pinch rotate", function(ev) {
+//        //myElement.textContent += ev.type +" ";
+//        console.log(ev.changedPointers[0]);
+//        image.width(width + ev.changedPointers[0].width*100);
+//        image.height(height +ev.changedPointers[0].height*100);
+//    });
+
     $('<div>').attr({
         id: elementID,
         class: 'canvas-border'
@@ -350,9 +375,9 @@ function changeGrid(){
 
             position: 'relative',
             width: n_grid[1],
-
             boxSizing: 'border-box',
             height: n_grid[2],
+            margin: 'none',
             border: '0.25vw solid rgb(61, 64, 68)',
             zIndex: 3,
             background: 'transparent'
@@ -559,7 +584,7 @@ function addContent(){
 
 
             $('#video'+canvasID)[0].autoplay = true;
-            $('#video'+canvasID)[0].controls = true;
+            //$('#video'+canvasID)[0].controls = true;
             $('#video'+canvasID).attr("playsinline", true);
             $('#video'+canvasID)[0].loop = true;
 

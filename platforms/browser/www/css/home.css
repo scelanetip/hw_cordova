@@ -66,17 +66,18 @@ width: 100%;
     text-align: center;
     color: #03a9f4;
     background-color: #fff;
-    font-size: 8vw;
-    padding: 5%;
+    font-size: 6vw;
+    padding: 10%;
+    border-radius: 15%;
     }
 
 .pt {
     position: absolute;
-    width: 25px;
-    height: 25px;
-    margin-left: -10px;
-    margin-top: -10px;
-    border-radius: 15px;
+    width: 6vw;
+    height: 6vw;
+    margin-left: -2vw;
+    margin-top: -2vw;
+    border-radius: 2vw;
     background-color: #03a9f4;
     cursor: pointer;
 }
@@ -170,27 +171,30 @@ width: 100%;
     z-index: 1;
 }
 
-#share{
+#menu-icon{
     font-size: 8vw;;
-    color: #fff;
+    color: #03a9f4;
+    background-color: #fff;
+    border-radius: 100%;
+    padding: 1%;
     order: 1;
     position: fixed;
-    right: 0;
-    bottom: 0,
+    right: 5%;
+    bottom: 5%;
     flex-basis: 100%;
 }
 
 #action-menu{
     z-index: 2;
     width: fit-content;
-    height: 45vw;
+    height: 50vw;
     position: fixed;
     right: 0;
-    top: 25%;
+    top: 0;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-evenly;
     margin-right: 3%;
 }
 
@@ -198,15 +202,15 @@ width: 100%;
     position: fixed;
     z-index: 2;
     left: 0;
-    top: 25%;
-    margin-left: 3%;
+    top: 0;
+    margin-left: 6%;
 }
 
 .dropdown-content {
   position: absolute;
-  height: 25vw;
-  width: fit-content;
-  background-color: transparent;
+  height: 18vw;
+  width: 16vw;
+  background-color: #00000082;
   overflow: auto;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 2;
@@ -246,9 +250,9 @@ width: 100%;
 }
 
 .number{
-    font-size: 1.5vw;
+    font-size: 3.5vw;
     color: white;
-    width: 3vw;
+    width: 5vw;
     text-align: center;
 }
 

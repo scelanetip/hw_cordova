@@ -66,7 +66,7 @@ width: 100%;
     text-align: center;
     color: #03a9f4;
     background-color: #fff;
-    font-size: 7vw;
+    font-size: 6vw;
     padding: 10%;
     border-radius: 15%;
     }
@@ -175,6 +175,8 @@ width: 100%;
     font-size: 8vw;;
     color: #03a9f4;
     background-color: #fff;
+    border-radius: 100%;
+    padding: 1%;
     order: 1;
     position: fixed;
     right: 5%;
@@ -185,7 +187,7 @@ width: 100%;
 #action-menu{
     z-index: 2;
     width: fit-content;
-    height: 55vw;
+    height: 50vw;
     position: fixed;
     right: 0;
     top: 0;
@@ -200,15 +202,15 @@ width: 100%;
     position: fixed;
     z-index: 2;
     left: 0;
-    top: 25%;
-    margin-left: 3%;
+    top: 0;
+    margin-left: 6%;
 }
 
 .dropdown-content {
   position: absolute;
-  height: 25vw;
-  width: fit-content;
-  background-color: transparent;
+  height: 18vw;
+  width: 16vw;
+  background-color: #00000082;
   overflow: auto;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 2;

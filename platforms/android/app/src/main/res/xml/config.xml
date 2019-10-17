@@ -10,9 +10,13 @@
         <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
         <param name="onload" value="true" />
     </feature>
-    <name>neditbox</name>
+    <feature name="SplashScreen">
+        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
+        <param name="onload" value="true" />
+    </feature>
+    <name>Nedit</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+         Image Editor.
     </description>
     <author email="scela@netipbox.com">
         netipbox Team
@@ -26,5 +30,8 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <allow-intent href="market:*" />
+    <icon src="www/img/logo.png" />
+    <splash src="www/img/example.png" />
     <preference name="loglevel" value="DEBUG" />
+    <preference name="SplashMaintainAspectRatio" value="false" />
 </widget>

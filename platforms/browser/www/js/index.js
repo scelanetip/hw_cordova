@@ -37,8 +37,10 @@ var app = {
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
 
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
+        // check for null before changing
+        if (receivedElement != null) receivedElement.setAttribute('style', 'display:block;');
+
+
 
         console.log('Received Event: ' + id);
     }
