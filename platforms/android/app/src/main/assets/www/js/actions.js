@@ -73,6 +73,7 @@ var canvasID, initWidth, initHeight = 0;
 //function to handle SAVE IMAGE button
 $(function () {
     $('#share').on('click touch', function (e) {
+        console.log("entra");
         html2canvas(document.body).then(canvas => {
             $(canvas).attr({
                 id: "myCanvas"
@@ -107,6 +108,7 @@ $(function () {
 });
 
 
+
 //function to select a screen and make it appear over the image
 $(function () {
 $('.screen').on('click touch', function (e) {
@@ -134,31 +136,6 @@ $('.screen').on('click touch', function (e) {
         top: '22%',
         border: '0.5vw solid transparent'
     }).appendTo('#workspace').draggable();
-
-    var myElement = document.getElementById(delementID);
-    var image =  $("#div"+ canvasID);
-
-    var mc = new Hammer.Manager(myElement);
-
-    // create a pinch and rotate recognizer
-    // these require 2 pointers
-    var pinch = new Hammer.Pinch();
-    var rotate = new Hammer.Rotate();
-
-    // we want to detect both the same time
-    pinch.recognizeWith(rotate);
-
-    // add to the Manager
-    mc.add([pinch, rotate]);
-    width = image.width();
-    height = image.height();
-
-    mc.on("pinch rotate", function(ev) {
-        //myElement.textContent += ev.type +" ";
-        console.log(ev.changedPointers[0]);
-        image.width(width + ev.changedPointers[0].width*100);
-        image.height(height +ev.changedPointers[0].height*100);
-    });
 
     $('<div>').attr({
         id: elementID,
@@ -199,15 +176,44 @@ $('.screen').on('click touch', function (e) {
     }else{
     $(".grid-menu").hide();}
 
-
     unperspective();
+
+    //RESIZE FUNCTION con gesture touch
 
     initWidth = container.width();
     initHeight = container.height();
 
-    //call menu action function with drag by default
+    var el = document.getElementById(delementID);
+    var ham = new Hammer( el, {
+    domEvents: true
+    } );
+    var width = initWidth;
+    var height = initHeight;
+    var left = 0;
+    var top = 0;
 
-    //activateMenu();
+    ham.get('pinch').set({ enable: true });
+
+    ham.on( "pinch", function( e ) {
+    if ( width * e.scale >= 100 ) {
+      var img = el;
+
+      img.style.width = (width * e.scale) + 'px';
+      img.style.marginLeft = (-left * e.scale) + 'px';
+      img.style.height = (height * e.scale) + 'px';
+      img.style.marginTop = (-top * e.scale) + 'px';
+     }
+    } );
+
+    ham.on( "pinchend", function( e ) {
+    width = width * e.scale;
+    height = height * e.scale;
+    left = left * e.scale;
+    top = top * e.scale;
+    } );
+
+
+
 
     $(".screen").each(function() {
         $(this).css('border', '1vw solid transparent');
@@ -269,15 +275,15 @@ function activateMenu(action) {
     $("#" + action).css('background-color', '#03a9f4');
     $("#" + action).css('color', '#fff');
 
-    var slidecontainer = $(".slidecontainer");
-    var contentcontainer = $(".content-container");
+    //var slidecontainer = $(".slidecontainer");
+    //var contentcontainer = $(".content-container");
 
 
     switch(action){
         case 'delete':
             $("#media-menu").hide();
-            slidecontainer.hide();
-            contentcontainer.hide();
+            //slidecontainer.hide();
+            //contentcontainer.hide();
             unperspective();
             //$("#div"+ canvasID).draggable({disabled: true});
             $("#div"+ canvasID).remove();
@@ -291,33 +297,33 @@ function activateMenu(action) {
 //            $("#media-menu").hide();
 //            unperspective();
 //            break;
-        case 'resize':
-            //$("#div"+ canvasID).draggable({disabled: true});
-            slidecontainer.show();
-            contentcontainer.hide();
-            $("#media-menu").hide();
-            resize(canvasID);
-            unperspective();
-            break;
+//        case 'resize':
+//            //$("#div"+ canvasID).draggable({disabled: true});
+//            slidecontainer.show();
+//            contentcontainer.hide();
+//            $("#media-menu").hide();
+//            resize(canvasID);
+//            unperspective();
+//            break;
         case 'perspective':
             //$("#div"+ canvasID).draggable({disabled: true});
-            slidecontainer.hide();
-            contentcontainer.hide();
+           // slidecontainer.hide();
+            //contentcontainer.hide();
             $("#media-menu").hide();
             perspective();
             break;
         case 'content':
             //$("#div"+ canvasID).draggable({disabled: true});
-            slidecontainer.hide();
+            //slidecontainer.hide();
             unperspective();
-            contentcontainer.show();
+            //contentcontainer.show();
 
             addContent();
             break;
         default:
             //$("#div"+ canvasID).draggable({disabled: false});
-            slidecontainer.hide();
-            contentcontainer.hide();
+            //slidecontainer.hide();
+            //contentcontainer.hide();
             unperspective();
             $("#media-menu").hide();
             break;
@@ -394,22 +400,22 @@ function deleteGrids(){
 
 
 //RESIZE FUNCTION
-function resize(){
-    var ranger = $("#myRange");
-    var width = initWidth;
-    var height = initHeight;
-
-    ranger.change(function(){
-        var image =  $("#div"+ canvasID);
-
-        width = image.width();
-        height = image.height();
-
-        image.width(initWidth * (ranger.val() / 50));
-        image.height( initHeight * (ranger.val() / 50));
-
-    });
-}
+//function resize(){
+//    var ranger = $("#myRange");
+//    var width = initWidth;
+//    var height = initHeight;
+//
+//    ranger.change(function(){
+//        var image =  $("#div"+ canvasID);
+//
+//        width = image.width();
+//        height = image.height();
+//
+//        image.width(initWidth * (ranger.val() / 50));
+//        image.height( initHeight * (ranger.val() / 50));
+//
+//    });
+//}
 
 
 //PERSPECTIVE FUNCTIONS
