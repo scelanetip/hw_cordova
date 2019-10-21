@@ -18,6 +18,12 @@
     },
     "cordova-plugin-splashscreen": {
       "PACKAGE_NAME": "com.example.hello"
+    },
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "com.example.hello"
+    },
+    "com.darktalker.cordova.screenshot": {
+      "PACKAGE_NAME": "com.example.hello"
     }
   },
   "dependent_plugins": {}

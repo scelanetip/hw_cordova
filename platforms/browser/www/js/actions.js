@@ -70,9 +70,30 @@ $("#files").on('click touch', function (e) {
 
 var canvasID, initWidth, initHeight = 0;
 
+
+
+function writeFile(fileEntry, dataObj) {
+    return new Promise(function (resolve, reject) {
+        fileEntry.createWriter(function (fileWriter) {
+            fileWriter.onwriteend = function () {
+                resolve();
+            };
+            fileWriter.onerror = function (e) {
+                reject(e);
+            };
+            var blob = new Blob([dataObj], {type: "image/png"});
+            console.log(blob)
+            fileWriter.write(blob);
+        });
+    });
+}
+
 //function to handle SAVE IMAGE button
 $(function () {
     $('#share').on('click touch', function (e) {
+
+        
+
         html2canvas(document.body).then(canvas => {
             $(canvas).attr({
                 id: "myCanvas"
@@ -85,26 +106,53 @@ $(function () {
                 background: 'slategrey'
             })
 
-            var link = document.createElement("a");
+            document.addEventListener("deviceready", function() {
 
-            link.download = "canvas-to-image";
-            link.href = canvas.toDataURL("image/png;base64");
-            /// create a "fake" click-event to trigger the download
-            if (document.createEvent) {
-                e = document.createEvent("MouseEvents");
-                e.initMouseEvent("click", true, true, window,
-                                 0, 0, 0, 0, 0, false, false, false,
-                                 false, 0, null);
+                window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
 
-                link.dispatchEvent(e);
-            } else if (link.fireEvent) {
-                link.fireEvent("onclick");
-            }
+                    //var absPath = "file:///storage/emulated/0/";
+                    var absPath = cordova.file.externalRootDirectory;
+                    var fileDir = cordova.file.externalDataDirectory.replace(cordova.file.externalRootDirectory, '');
+                    var fileName = "somename.png";
+                    var filePath = fileDir + fileName;
+//                    console.log(filePath)
+//                    console.log(canvas.toDataURL("image/png;base64"))
+                    console.log(fs)
+                    console.log(fs.root);
+
+                    fs.root.getFile(filePath, { create: true, exclusive: false }, function (fileEntry) {
+                    writeFile(fileEntry, canvas.toDataURL("image/png")).then(function(){
+                      //do something here
+                    });
+                }, function(err) {
+                console.log(err);
+                });
+            }, function(err) {
+
+            });
+            }, false);
+//            var link = document.createElement("a");
+//
+//            link.download = "canvas-to-image";
+//            link.href = canvas.toDataURL("image/png;base64");
+//            /// create a "fake" click-event to trigger the download
+//            if (document.createEvent) {
+//                e = document.createEvent("MouseEvents");
+//                e.initMouseEvent("click", true, true, window,
+//                                 0, 0, 0, 0, 0, false, false, false,
+//                                 false, 0, null);
+//
+//                link.dispatchEvent(e);
+//            } else if (link.fireEvent) {
+//                link.fireEvent("onclick");
+//            }
+
         });
 
     });
 
 });
+
 
 
 //function to select a screen and make it appear over the image
@@ -174,15 +222,44 @@ $('.screen').on('click touch', function (e) {
     }else{
     $(".grid-menu").hide();}
 
-
     unperspective();
+
+    //RESIZE FUNCTION con gesture touch
 
     initWidth = container.width();
     initHeight = container.height();
 
-    //call menu action function with drag by default
+    var el = document.getElementById(delementID);
+    var ham = new Hammer( el, {
+    domEvents: true
+    } );
+    var width = initWidth;
+    var height = initHeight;
+    var left = 0;
+    var top = 0;
 
-    //activateMenu();
+    ham.get('pinch').set({ enable: true });
+
+    ham.on( "pinch", function( e ) {
+    if ( width * e.scale >= 100 ) {
+      var img = el;
+
+      img.style.width = (width * e.scale) + 'px';
+      img.style.marginLeft = (-left * e.scale) + 'px';
+      img.style.height = (height * e.scale) + 'px';
+      img.style.marginTop = (-top * e.scale) + 'px';
+     }
+    } );
+
+    ham.on( "pinchend", function( e ) {
+    width = width * e.scale;
+    height = height * e.scale;
+    left = left * e.scale;
+    top = top * e.scale;
+    } );
+
+
+
 
     $(".screen").each(function() {
         $(this).css('border', '1vw solid transparent');
@@ -244,15 +321,15 @@ function activateMenu(action) {
     $("#" + action).css('background-color', '#03a9f4');
     $("#" + action).css('color', '#fff');
 
-    var slidecontainer = $(".slidecontainer");
-    var contentcontainer = $(".content-container");
+    //var slidecontainer = $(".slidecontainer");
+    //var contentcontainer = $(".content-container");
 
 
     switch(action){
         case 'delete':
             $("#media-menu").hide();
-            slidecontainer.hide();
-            contentcontainer.hide();
+            //slidecontainer.hide();
+            //contentcontainer.hide();
             unperspective();
             //$("#div"+ canvasID).draggable({disabled: true});
             $("#div"+ canvasID).remove();
@@ -266,33 +343,33 @@ function activateMenu(action) {
 //            $("#media-menu").hide();
 //            unperspective();
 //            break;
-        case 'resize':
-            //$("#div"+ canvasID).draggable({disabled: true});
-            slidecontainer.show();
-            contentcontainer.hide();
-            $("#media-menu").hide();
-            resize(canvasID);
-            unperspective();
-            break;
+//        case 'resize':
+//            //$("#div"+ canvasID).draggable({disabled: true});
+//            slidecontainer.show();
+//            contentcontainer.hide();
+//            $("#media-menu").hide();
+//            resize(canvasID);
+//            unperspective();
+//            break;
         case 'perspective':
             //$("#div"+ canvasID).draggable({disabled: true});
-            slidecontainer.hide();
-            contentcontainer.hide();
+           // slidecontainer.hide();
+            //contentcontainer.hide();
             $("#media-menu").hide();
             perspective();
             break;
         case 'content':
             //$("#div"+ canvasID).draggable({disabled: true});
-            slidecontainer.hide();
+            //slidecontainer.hide();
             unperspective();
-            contentcontainer.show();
+            //contentcontainer.show();
 
             addContent();
             break;
         default:
             //$("#div"+ canvasID).draggable({disabled: false});
-            slidecontainer.hide();
-            contentcontainer.hide();
+            //slidecontainer.hide();
+            //contentcontainer.hide();
             unperspective();
             $("#media-menu").hide();
             break;
@@ -369,22 +446,22 @@ function deleteGrids(){
 
 
 //RESIZE FUNCTION
-function resize(){
-    var ranger = $("#myRange");
-    var width = initWidth;
-    var height = initHeight;
-
-    ranger.change(function(){
-        var image =  $("#div"+ canvasID);
-
-        width = image.width();
-        height = image.height();
-
-        image.width(initWidth * (ranger.val() / 50));
-        image.height( initHeight * (ranger.val() / 50));
-
-    });
-}
+//function resize(){
+//    var ranger = $("#myRange");
+//    var width = initWidth;
+//    var height = initHeight;
+//
+//    ranger.change(function(){
+//        var image =  $("#div"+ canvasID);
+//
+//        width = image.width();
+//        height = image.height();
+//
+//        image.width(initWidth * (ranger.val() / 50));
+//        image.height( initHeight * (ranger.val() / 50));
+//
+//    });
+//}
 
 
 //PERSPECTIVE FUNCTIONS

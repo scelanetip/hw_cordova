@@ -70,42 +70,28 @@ $("#files").on('click touch', function (e) {
 
 var canvasID, initWidth, initHeight = 0;
 
+
+
 //function to handle SAVE IMAGE button
-$(function () {
-    $('#share').on('click touch', function (e) {
-        console.log("entra");
-        html2canvas(document.body).then(canvas => {
-            $(canvas).attr({
-                id: "myCanvas"
-                }).css({
-                height: '100%',
-                width: '100%',
-                position: 'absolute',
-                zIndex: '90',
-                boxSizing: 'border-box',
-                background: 'slategrey'
-            })
+function saveImage() {
+        //https://github.com/gitawego/cordova-screenshot
 
-            var link = document.createElement("a");
+        navigator.screenshot.save(function(error,res){
 
-            link.download = "canvas-to-image";
-            link.href = canvas.toDataURL("image/png;base64");
-            /// create a "fake" click-event to trigger the download
-            if (document.createEvent) {
-                e = document.createEvent("MouseEvents");
-                e.initMouseEvent("click", true, true, window,
-                                 0, 0, 0, 0, 0, false, false, false,
-                                 false, 0, null);
-
-                link.dispatchEvent(e);
-            } else if (link.fireEvent) {
-                link.fireEvent("onclick");
-            }
+          if(error){
+            console.error(error);
+          }else{
+            console.log('ok',res.filePath);
+            console.log(navigator.screenshot.save)
+          }
         });
 
-    });
+//        $('#screen-section').show();
+//        $('#action-menu').show();
+//        $("#media-menu").show();
+//        $("#menu-icon").show();
 
-});
+}
 
 
 
@@ -290,13 +276,10 @@ function activateMenu(action) {
             $("#canvas-div"+ canvasID).remove();
 
             break;
-//        case 'drag':
-//            $("#div"+ canvasID).draggable({disabled: false});
-//            slidecontainer.hide();
-//            contentcontainer.hide();
-//            $("#media-menu").hide();
-//            unperspective();
-//            break;
+        case 'share':
+
+            saveImage();
+            break;
 //        case 'resize':
 //            //$("#div"+ canvasID).draggable({disabled: true});
 //            slidecontainer.show();

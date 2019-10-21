@@ -26,4 +26,7 @@
         <allow-intent href="itms-apps:*" />
     </platform>
     <preference name="SplashMaintainAspectRatio" value="false" />
+    <preference name="AndroidPersistentFileLocation" value="Internal" />
+
+    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
 </widget>

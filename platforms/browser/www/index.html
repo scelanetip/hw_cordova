@@ -38,6 +38,7 @@
         <link rel="stylesheet" href="css/home.css" type="text/css" charset="utf-8"/>
 <!--        <link rel="stylesheet" href="css/index.css" type="text/css" charset="utf-8"/>-->
         <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"/>
+        <link rel="shortcut icon" href="https://www.netipbox.com/wp-content/uploads/2019/03/favicon.png" type="image/x-icon">
 
         <title>NeditBox: Image Editor </title>
 
@@ -47,6 +48,7 @@
         <script src="js/jquery.ui.touch-punch.min.js"></script>
         <script src="http://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
         <script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
+
     </head>
     <body>
     <div id="init" class="container">
@@ -63,9 +65,9 @@
         <div id="workspace" >
             <div id="image-section">
                 <img id="myImg" src="#" alt=""/>
-                <div class="slidecontainer" style="display:none">
-                    <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
-                </div>
+<!--                <div class="slidecontainer" style="display:none">-->
+<!--                    <input type="range" min="1" max="100" value="50" class="slider" id="myRange">-->
+<!--                </div>-->
 
             </div>
 
@@ -77,9 +79,9 @@
 <!--                    <i id="drag" class="material-icons menu">open_with</i>-->
                     <i id="share" class="material-icons menu">open_in_new</i>
                 </label>
-                <label>
-                    <i id="resize" class="material-icons menu">crop</i>
-                </label>
+<!--                <label>-->
+<!--                    <i id="resize" class="material-icons menu">crop</i>-->
+<!--                </label>-->
                 <label>
                     <i id="perspective" class="material-icons menu">zoom_out_map</i>
                 </label>
@@ -166,6 +168,7 @@
         <script type="text/javascript" src="js/actions.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript" src="js/PerspectiveTransform.min.js"></script>
+
 
 
     </body>
