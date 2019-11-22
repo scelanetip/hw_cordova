@@ -48,10 +48,28 @@ $(document).on("click touch", ".number", function (event) {
 
 //});
 
+//function to take an image and display on screen
+//function onSuccess(imageURI) {
+//    var image = document.getElementById('#myImg');
+//    image.src = imageURI;
+//}
+//
+//function onFail(message) {
+//    alert('Failed because: ' + message);
+//}
+//$(function () {
+//$("#files").on('click touch', function (e) {
+//navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+//    destinationType: Camera.DestinationType.FILE_URI });
+//
+//    });
+//
+//});
+
 //function to upload an image and display on screen
+
 $(function () {
 $("#files").on('click touch', function (e) {
-
 
     $(":file[name=initFile]").change(function () {
         if (this.files && this.files[0]) {
@@ -68,90 +86,60 @@ $("#files").on('click touch', function (e) {
 });
 });
 
+//function click shutter
+$(function () {
+$("#shut").on('click touch', function (e) {
+
+    navigator.screenshot.save(function(error,res){
+
+          if(error){
+            console.error(error);
+          }else{
+            console.log('ok',res.filePath);
+            console.log(navigator.screenshot.save)
+          }
+        });
+
+        $('#menu-icon').show();
+        $('#default').show();
+        $('#grid').show();
+        $('#action-menu').show();
+
+        $('#shut').hide();
+
+});
+});
+
 var canvasID, initWidth, initHeight = 0;
 
 
 
-function writeFile(fileEntry, dataObj) {
-    return new Promise(function (resolve, reject) {
-        fileEntry.createWriter(function (fileWriter) {
-            fileWriter.onwriteend = function () {
-                resolve();
-            };
-            fileWriter.onerror = function (e) {
-                reject(e);
-            };
-            var blob = new Blob([dataObj], {type: "image/png"});
-            console.log(blob)
-            fileWriter.write(blob);
-        });
-    });
-}
-
 //function to handle SAVE IMAGE button
-$(function () {
-    $('#share').on('click touch', function (e) {
+function saveImage() {
+        //https://github.com/gitawego/cordova-screenshot
 
-        
+        $(".canvas-div").each(function() {
+            $(this).css('border', '0.5vw solid transparent');
+        });
 
-        html2canvas(document.body).then(canvas => {
-            $(canvas).attr({
-                id: "myCanvas"
-                }).css({
-                height: '100%',
-                width: '100%',
-                position: 'absolute',
-                zIndex: '90',
-                boxSizing: 'border-box',
-                background: 'slategrey'
-            })
-
-            document.addEventListener("deviceready", function() {
-
-                window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
-
-                    //var absPath = "file:///storage/emulated/0/";
-                    var absPath = cordova.file.externalRootDirectory;
-                    var fileDir = cordova.file.externalDataDirectory.replace(cordova.file.externalRootDirectory, '');
-                    var fileName = "somename.png";
-                    var filePath = fileDir + fileName;
-//                    console.log(filePath)
-//                    console.log(canvas.toDataURL("image/png;base64"))
-                    console.log(fs)
-                    console.log(fs.root);
-
-                    fs.root.getFile(filePath, { create: true, exclusive: false }, function (fileEntry) {
-                    writeFile(fileEntry, canvas.toDataURL("image/png")).then(function(){
-                      //do something here
-                    });
-                }, function(err) {
-                console.log(err);
-                });
-            }, function(err) {
-
-            });
-            }, false);
-//            var link = document.createElement("a");
-//
-//            link.download = "canvas-to-image";
-//            link.href = canvas.toDataURL("image/png;base64");
-//            /// create a "fake" click-event to trigger the download
-//            if (document.createEvent) {
-//                e = document.createEvent("MouseEvents");
-//                e.initMouseEvent("click", true, true, window,
-//                                 0, 0, 0, 0, 0, false, false, false,
-//                                 false, 0, null);
-//
-//                link.dispatchEvent(e);
-//            } else if (link.fireEvent) {
-//                link.fireEvent("onclick");
-//            }
+        $(".screen").each(function() {
+            $(this).css('border', '1vw solid transparent');
+//        $(this).attr("selected",false);
 
         });
 
-    });
 
-});
+        $('#menu-icon').hide();
+        $('#default').hide();
+        $('#grid').hide();
+        $('.grid-menu').hide();
+        $('#action-menu').hide();
+        $("#media-menu").hide();
+
+        $('#shut').show();
+
+
+}
 
 
 
@@ -274,23 +262,23 @@ $('.screen').on('click touch', function (e) {
 
 $(function () {
 
-var slidecontainer = $(".slidecontainer");
-var contentcontainer = $(".content-container");
+//var slidecontainer = $(".slidecontainer");
+//var contentcontainer = $(".content-container");
+
 $('#menu-icon').on('click touch', function (e) {
 
     if($(this).hasClass('unselected')){
         $("#action-menu").show();
         $(this).css('color', '#fff');
         $(this).css('background-color', '#03a9f4');
-
         $(this).removeClass('unselected').addClass('selected');
     }else{
         $("#action-menu").hide();
         $(this).css('color', '#03a9f4');
         $(this).css('background-color', '#fff');
         $(this).removeClass('selected').addClass('unselected');
-        slidecontainer.hide();
-        contentcontainer.hide();
+//        slidecontainer.hide();
+//        contentcontainer.hide();
         unperspective();
         $("#media-menu").hide();
     }
@@ -336,13 +324,10 @@ function activateMenu(action) {
             $("#canvas-div"+ canvasID).remove();
 
             break;
-//        case 'drag':
-//            $("#div"+ canvasID).draggable({disabled: false});
-//            slidecontainer.hide();
-//            contentcontainer.hide();
-//            $("#media-menu").hide();
-//            unperspective();
-//            break;
+        case 'share':
+
+            saveImage();
+            break;
 //        case 'resize':
 //            //$("#div"+ canvasID).draggable({disabled: true});
 //            slidecontainer.show();

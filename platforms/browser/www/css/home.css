@@ -171,7 +171,7 @@ width: 100%;
     z-index: 1;
 }
 
-#menu-icon{
+.shutter{
     font-size: 8vw;;
     color: #03a9f4;
     background-color: #fff;

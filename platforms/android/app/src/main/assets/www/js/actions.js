@@ -1,16 +1,5 @@
 
-//function onDeviceReady() {
-//    if (navigator.connection.type == Connection.NONE) {
-//      navigator.notification.alert('An internet connection is required to continue');
-//    } else {
-//      window.location="http://192.168.1.182:8080/";
-//    }
-//  }
-//  document.addEventListener("deviceready", onDeviceReady, false);
-
-
-
-//$(document).ready(function() {
+var canvasID, initWidth, initHeight = 0;
 
 //Manage click on different TVS
 $(document).on("click touch touchmove", ".canvas-div", function (event) {
@@ -46,12 +35,30 @@ $(document).on("click touch", ".number", function (event) {
 });
 
 
-//});
+//function to take an image and display on screen
+function onSuccess(imageURI) {
+    var image = document.getElementById('myImg');
+    image.src = imageURI;
+}
+
+function onFail(message) {
+    alert('Failed because: ' + message);
+}
+$(function () {
+$("#camera").on('click touch', function (e) {
+navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+    destinationType: Camera.DestinationType.FILE_URI });
+    $("#init").hide();
+    $("#home").show();
+
+    });
+
+});
 
 //function to upload an image and display on screen
+
 $(function () {
 $("#files").on('click touch', function (e) {
-
 
     $(":file[name=initFile]").change(function () {
         if (this.files && this.files[0]) {
@@ -68,15 +75,11 @@ $("#files").on('click touch', function (e) {
 });
 });
 
-var canvasID, initWidth, initHeight = 0;
+//function click shutter
+$(function () {
+$("#shut").on('click touch', function (e) {
 
-
-
-//function to handle SAVE IMAGE button
-function saveImage() {
-        //https://github.com/gitawego/cordova-screenshot
-
-        navigator.screenshot.save(function(error,res){
+    navigator.screenshot.save(function(error,res){
 
           if(error){
             console.error(error);
@@ -86,13 +89,42 @@ function saveImage() {
           }
         });
 
-//        $('#screen-section').show();
-//        $('#action-menu').show();
-//        $("#media-menu").show();
-//        $("#menu-icon").show();
+        $('#menu-icon').show();
+        $('#default').show();
+        $('#grid').show();
+        $('#action-menu').show();
+
+        $('#shut').hide();
+
+});
+});
+
+//function to handle SAVE IMAGE button
+function saveImage() {
+        //https://github.com/gitawego/cordova-screenshot
+
+        $(".canvas-div").each(function() {
+            $(this).css('border', '0.5vw solid transparent');
+        });
+
+        $(".screen").each(function() {
+            $(this).css('border', '1vw solid transparent');
+//        $(this).attr("selected",false);
+
+        });
+
+
+        $('#menu-icon').hide();
+        $('#default').hide();
+        $('#grid').hide();
+        $('.grid-menu').hide();
+        $('#action-menu').hide();
+        $("#media-menu").hide();
+
+        $('#shut').show();
+
 
 }
-
 
 
 //function to select a screen and make it appear over the image
@@ -214,23 +246,29 @@ $('.screen').on('click touch', function (e) {
 
 $(function () {
 
-var slidecontainer = $(".slidecontainer");
-var contentcontainer = $(".content-container");
+
 $('#menu-icon').on('click touch', function (e) {
 
     if($(this).hasClass('unselected')){
         $("#action-menu").show();
         $(this).css('color', '#fff');
         $(this).css('background-color', '#03a9f4');
-
         $(this).removeClass('unselected').addClass('selected');
     }else{
         $("#action-menu").hide();
+        $(".canvas-div").each(function() {
+            $(this).css('border', '0.5vw solid transparent');
+        });
+
+        $(".screen").each(function() {
+            $(this).css('border', '1vw solid transparent');
+//        $(this).attr("selected",false);
+
+        });
         $(this).css('color', '#03a9f4');
         $(this).css('background-color', '#fff');
         $(this).removeClass('selected').addClass('unselected');
-        slidecontainer.hide();
-        contentcontainer.hide();
+        $(".grid-menu").hide();
         unperspective();
         $("#media-menu").hide();
     }
@@ -261,52 +299,26 @@ function activateMenu(action) {
     $("#" + action).css('background-color', '#03a9f4');
     $("#" + action).css('color', '#fff');
 
-    //var slidecontainer = $(".slidecontainer");
-    //var contentcontainer = $(".content-container");
-
 
     switch(action){
         case 'delete':
             $("#media-menu").hide();
-            //slidecontainer.hide();
-            //contentcontainer.hide();
             unperspective();
-            //$("#div"+ canvasID).draggable({disabled: true});
             $("#div"+ canvasID).remove();
             $("#canvas-div"+ canvasID).remove();
-
             break;
         case 'share':
-
             saveImage();
             break;
-//        case 'resize':
-//            //$("#div"+ canvasID).draggable({disabled: true});
-//            slidecontainer.show();
-//            contentcontainer.hide();
-//            $("#media-menu").hide();
-//            resize(canvasID);
-//            unperspective();
-//            break;
         case 'perspective':
-            //$("#div"+ canvasID).draggable({disabled: true});
-           // slidecontainer.hide();
-            //contentcontainer.hide();
             $("#media-menu").hide();
             perspective();
             break;
         case 'content':
-            //$("#div"+ canvasID).draggable({disabled: true});
-            //slidecontainer.hide();
             unperspective();
-            //contentcontainer.show();
-
             addContent();
             break;
         default:
-            //$("#div"+ canvasID).draggable({disabled: false});
-            //slidecontainer.hide();
-            //contentcontainer.hide();
             unperspective();
             $("#media-menu").hide();
             break;
@@ -326,8 +338,6 @@ $(function () {
             $(this).nextUntil("button").hide();
         }
         }
-
-
     });
 });
 
@@ -376,30 +386,8 @@ function changeGrid(){
 }
 
 function deleteGrids(){
-
     $('#'+'canvas-div' + canvasID).find('.canvas-grid').remove();
-
     }
-
-
-//RESIZE FUNCTION
-//function resize(){
-//    var ranger = $("#myRange");
-//    var width = initWidth;
-//    var height = initHeight;
-//
-//    ranger.change(function(){
-//        var image =  $("#div"+ canvasID);
-//
-//        width = image.width();
-//        height = image.height();
-//
-//        image.width(initWidth * (ranger.val() / 50));
-//        image.height( initHeight * (ranger.val() / 50));
-//
-//    });
-//}
-
 
 //PERSPECTIVE FUNCTIONS
 function unperspective(){
@@ -420,8 +408,6 @@ function perspective(){
     var IMG_WIDTH = $(elementID).width();
     var IMG_HEIGHT = $(elementID).height();
 
-//    var IMG_WIDTH = $("#image-section").width();
-//    var IMG_HEIGHT = $("#image-section").height();
     pts.show();
 
     var transform = new PerspectiveTransform(img[0], IMG_WIDTH, IMG_HEIGHT, true);
@@ -445,10 +431,9 @@ function perspective(){
     var targetPoint;
 
     function onMouseMove(e) {
-        //console.log(e)
+
         targetPoint.x = e.pageX - container.offset().left ;
         targetPoint.y = e.pageY - container.offset().top ;
-//        console.log(targetPoint.x,targetPoint.y);
         target.css({
             left : targetPoint.x,
             top : targetPoint.y
@@ -459,11 +444,9 @@ function perspective(){
             transform.update();
             img.show();
         }else{
-//            console.log(transform.checkError())
             img.hide();
         }
     }
-//    pts.mousedown(function(e) {
     $("#div"+ canvasID).css('border', '0.5vw solid transparent');
 
     pts.draggable();
@@ -476,6 +459,7 @@ function perspective(){
             $(window).unbind('mousemove', onMouseMove);
         })
     });
+
 //    pts.on('touchstart', function (e) {
 //        //e.preventDefault();
 //        pts.draggable({disabled: false});
@@ -528,10 +512,6 @@ function addContent(){
             filename = $(this).children().attr('src');
         }
 
-//    $(":file").change(function () {
-//        if (this.files && this.files[0]) {
-
-//filename = this.files[0].name;
         var re = /(?:\.([^.]+))?$/;
         var ext = re.exec(filename)[1];
 
@@ -583,7 +563,5 @@ function addContent(){
 
     });
 
-////        }
-////    });
 }
 
